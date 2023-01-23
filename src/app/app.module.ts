@@ -14,6 +14,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { CoinListComponent } from './components/coin-list/coin-list.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { PageListComponent } from './views/page-list/page-list.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -22,6 +27,7 @@ import { FooterComponent } from './components/footer/footer.component';
     NavbarComponent,
     HomeComponent,
     FooterComponent,
+    PageListComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +38,10 @@ import { FooterComponent } from './components/footer/footer.component';
     MatListModule,
     MatButtonModule,
     MatIconModule,
+    MatTableModule,
+    HttpClientModule,
+    MatPaginatorModule,
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

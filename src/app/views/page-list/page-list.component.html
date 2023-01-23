@@ -1,0 +1,10 @@
+<table class="user__list" *ngIf="(symbols$ | async)?.length">
+  <tr>
+    <th>Código</th>
+    <th>Descrição</th>
+  </tr>
+  <tr class="user" *ngFor="let symbol of symbols$ | async">
+    <td>{{ symbol.code }}</td>
+    <td>{{ symbol.description }}</td>
+  </tr>
+</table>
