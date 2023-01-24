@@ -15,22 +15,4 @@ import { ExchangeService } from 'src/app/services/exchange.service';
   templateUrl: './coin-list.component.html',
   styleUrls: ['./coin-list.component.css'],
 })
-export class CoinListComponent implements AfterViewInit {
-  tableColums: string[] = ['code', 'description'];
-  symbols: SymbolResponse[] = [];
-  dataTable = new MatTableDataSource<SymbolResponse>(this.symbols);
-
-  @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
-
-  ngAfterViewInit() {
-    this.dataTable.paginator = this.paginator;
-  }
-
-  constructor(private exchangeService: ExchangeService) {}
-
-  ngOnInit(): void {
-    this.exchangeService.getSymbols().subscribe((res) => {
-      this.symbols = res;
-    });
-  }
-}
+export class CoinListComponent {}
