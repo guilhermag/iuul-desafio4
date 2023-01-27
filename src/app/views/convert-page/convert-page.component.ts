@@ -105,6 +105,7 @@ export class ConvertPageComponent implements OnInit {
       stringSize.finalSymbolBegin,
       stringSize.finalSymbolEnd
     );
+    this.convertForm.patchValue([{ originCurrency: 'brl' }]);
 
     return formValues;
   }
