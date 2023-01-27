@@ -23,6 +23,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ConvertPageComponent } from './views/convert-page/convert-page.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { MatInputModule } from '@angular/material/input';
     HomeComponent,
     FooterComponent,
     PageListComponent,
+    ConvertPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +54,7 @@ import { MatInputModule } from '@angular/material/input';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

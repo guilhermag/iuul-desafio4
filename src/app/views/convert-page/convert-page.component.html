@@ -1,0 +1,66 @@
+<div class="convert-container">
+  <mat-card class="convert-card">
+    <mat-card-header>
+      <mat-card-title>Conversor de moedas</mat-card-title>
+      <mat-card-subtitle>Escolha as moedas para converter</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="convertForm" class="form-container">
+        <div class="convert-currencies">
+          <mat-form-field class="convert-field" appearance="fill">
+            <input
+              matInput
+              placeholder="Moeda de origem"
+              formControlName="originCurrency"
+            />
+          </mat-form-field>
+          <mat-form-field class="convert-field">
+            <input
+              matInput
+              placeholder="Moeda de destino"
+              formControlName="finalCurrency"
+            />
+          </mat-form-field>
+        </div>
+        <div class="convert-amount">
+          <mat-form-field appearance="fill" floatLabel="always">
+            <mat-label>Amount</mat-label>
+            <input
+              matInput
+              type="number"
+              placeholder="0"
+              formControlName="amount"
+            />
+            <span matTextPrefix>{{ result.to }}&nbsp;</span>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="convertCurrency()">
+        Converter
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card *ngIf="convertResult">
+    <mat-card-header>
+      <mat-card-title>Resultado</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ result.amount }} em {{ result.from }} equivale a</p>
+      <p>{{ result.result }} em {{ result.to }}</p>
+      <p>Taxa de conversão utilizada: {{ result.rate }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-mini-fab
+        color="warn"
+        class="button-close"
+        (click)="closeResult()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
