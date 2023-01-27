@@ -14,6 +14,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { PageListComponent } from './views/page-list/page-list.component';
 import { ConvertPageComponent } from './views/convert-page/convert-page.component';
 import { AppMaterialModule } from './shared/app-material.module';
+import { HistoryComponent } from './views/history/history.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AppMaterialModule } from './shared/app-material.module';
     FooterComponent,
     PageListComponent,
     ConvertPageComponent,
+    HistoryComponent,
   ],
   imports: [
     AppRoutingModule,

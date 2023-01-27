@@ -61,32 +61,38 @@
       </form>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="convertCurrency()">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="convertCurrency()"
+        [disabled]="!convertForm.valid"
+      >
         Converter
       </button>
     </mat-card-actions>
   </mat-card>
 
-  <mat-spinner></mat-spinner>
-
-  <mat-card *ngIf="convertResult">
-    <mat-card-header>
-      <mat-card-title>Resultado</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>{{ result.amount }} em {{ result.originCurrency }} equivale a</p>
-      <p>{{ result.result }} em {{ result.finalCurrency }}</p>
-      <p>Taxa de conversão utilizada: {{ result.rate }}</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button
-        mat-mini-fab
-        color="warn"
-        class="button-close"
-        (click)="closeResult()"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-card-actions>
+  <mat-card *ngIf="convertResult" class="result-card">
+    <mat-spinner *ngIf="!searchResult"></mat-spinner>
+    <div *ngIf="searchResult">
+      <mat-card-header>
+        <mat-card-title>Resultado</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ result.amount }} em {{ result.originCurrency }} equivale a</p>
+        <p>{{ result.result }} em {{ result.finalCurrency }}</p>
+        <p>Taxa de conversão utilizada: {{ result.rate }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-mini-fab
+          color="warn"
+          class="button-close"
+          (click)="closeResult()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-actions>
+    </div>
   </mat-card>
 </div>

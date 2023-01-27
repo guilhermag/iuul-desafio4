@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { map, Observable, startWith, tap } from 'rxjs';
+import { REGEX_ONLY_NUMBERS } from 'src/app/models/constants';
 import {
   ConvertResult,
   formData,
@@ -16,6 +22,7 @@ import { ExchangeService } from 'src/app/services/exchange.service';
 export class ConvertPageComponent implements OnInit {
   convertForm!: FormGroup;
   symbolList!: string[];
+  searchResult = false;
 
   currencyControl = new FormControl('');
   filteredOriginCurrency!: Observable<any>;
@@ -38,9 +45,15 @@ export class ConvertPageComponent implements OnInit {
 
   ngOnInit() {
     this.convertForm = this.formBuilder.group({
-      originCurrency: ['Brazilian Real (BRL)'],
-      finalCurrency: ['United States Dollar (USD)'],
-      amount: ['10'],
+      originCurrency: ['Brazilian Real (BRL)', Validators.required],
+      finalCurrency: ['United States Dollar (USD)', Validators.required],
+      amount: [
+        '10',
+        Validators.compose([
+          Validators.required,
+          Validators.pattern(REGEX_ONLY_NUMBERS),
+        ]),
+      ],
     });
     this.exchangeService
       .getSymbols()
@@ -63,13 +76,17 @@ export class ConvertPageComponent implements OnInit {
 
   convertCurrency() {
     const formValues: formData = this.convertToFormData();
+    this.searchResult = false;
     this.exchangeService
       .convertCurrency(
         formValues.originCurrency,
         formValues.finalCurrency,
         formValues.amount
       )
-      .subscribe((result) => (this.result = result));
+      .subscribe((result) => {
+        this.result = result;
+        this.searchResult = true;
+      });
     this.convertResult = true;
   }
 
