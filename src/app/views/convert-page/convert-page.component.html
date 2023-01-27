@@ -8,30 +8,54 @@
       <form [formGroup]="convertForm" class="form-container">
         <div class="convert-currencies">
           <mat-form-field class="convert-field" appearance="fill">
+            <mat-label>Moeda de origem</mat-label>
             <input
-              matInput
+              type="text"
               placeholder="Moeda de origem"
+              matInput
+              [matAutocomplete]="originCurrency"
               formControlName="originCurrency"
             />
+            <mat-autocomplete #originCurrency="matAutocomplete">
+              <mat-option
+                *ngFor="let option of filteredOriginCurrency | async"
+                [value]="option"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
           <mat-form-field class="convert-field">
+            <mat-label>Moeda de destino</mat-label>
             <input
-              matInput
+              type="text"
               placeholder="Moeda de destino"
+              matInput
+              [matAutocomplete]="finalCurrency"
               formControlName="finalCurrency"
             />
+            <mat-autocomplete #finalCurrency="matAutocomplete">
+              <mat-option
+                *ngFor="let option of filteredFinalCurrency | async"
+                [value]="option"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
         </div>
         <div class="convert-amount">
           <mat-form-field appearance="fill" floatLabel="always">
-            <mat-label>Amount</mat-label>
+            <mat-label>Valor</mat-label>
             <input
               matInput
               type="number"
               placeholder="0"
               formControlName="amount"
             />
-            <span matTextPrefix>{{ result.to }}&nbsp;</span>
+            <span matTextPrefix
+              >{{ convertForm.value.originCurrency }}&nbsp;</span
+            >
           </mat-form-field>
         </div>
       </form>
@@ -48,8 +72,8 @@
       <mat-card-title>Resultado</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>{{ result.amount }} em {{ result.from }} equivale a</p>
-      <p>{{ result.result }} em {{ result.to }}</p>
+      <p>{{ result.amount }} em {{ result.originCurrency }} equivale a</p>
+      <p>{{ result.result }} em {{ result.finalCurrency }}</p>
       <p>Taxa de conversão utilizada: {{ result.rate }}</p>
     </mat-card-content>
     <mat-card-actions>

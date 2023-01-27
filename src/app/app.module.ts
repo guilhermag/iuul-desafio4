@@ -25,6 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ConvertPageComponent } from './views/convert-page/convert-page.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { MatCardModule } from '@angular/material/card';
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { map, Observable, startWith } from 'rxjs';
-import { ConvertResult } from 'src/app/models/interfaces';
+import { map, Observable, startWith, tap } from 'rxjs';
+import {
+  ConvertResult,
+  formData,
+  SymbolResponse,
+} from 'src/app/models/interfaces';
 import { ExchangeService } from 'src/app/services/exchange.service';
 
 @Component({
@@ -11,17 +15,18 @@ import { ExchangeService } from 'src/app/services/exchange.service';
 })
 export class ConvertPageComponent implements OnInit {
   convertForm!: FormGroup;
+  symbolList!: string[];
 
-  originCurrency = new FormControl('');
-  finalCurrency = new FormControl('');
-  filteredCurrencyOrigin!: Observable<string[]>;
-  filteredCurrencyFinal!: Observable<string[]>;
+  currencyControl = new FormControl('');
+  filteredOriginCurrency!: Observable<any>;
+  filteredFinalCurrency!: Observable<any>;
+
   convertResult = false;
   result: ConvertResult = {
     amount: 100,
     date: new Date().toISOString(),
-    from: 'BRL',
-    to: 'USD',
+    originCurrency: 'BRL',
+    finalCurrency: 'USD',
     rate: 0.2000678,
     result: 19.867,
   };
@@ -33,23 +38,74 @@ export class ConvertPageComponent implements OnInit {
 
   ngOnInit() {
     this.convertForm = this.formBuilder.group({
-      originCurrency: ['BRL'],
-      finalCurrency: ['USD'],
+      originCurrency: ['Brazilian Real (BRL)'],
+      finalCurrency: ['United States Dollar (USD)'],
       amount: ['10'],
     });
-    this.exchangeService.convertCurrency().subscribe();
-    // this.filteredCurrencyOrigin = this.originCurrency.valueChanges.pipe(
-    //   startWith(''),
-    //   map()
-    // );
+    this.exchangeService
+      .getSymbols()
+      .pipe(
+        map((res) =>
+          res.map(
+            (symbolCurrency) =>
+              `${symbolCurrency.description} (${symbolCurrency.code})`
+          )
+        )
+      )
+      .subscribe((response) => (this.symbolList = response));
+    this.filteredOriginCurrency = this.convertForm
+      .get('originCurrency')!
+      .valueChanges.pipe(map((filter) => this.filterSymbols(filter || '')));
+    this.filteredFinalCurrency = this.convertForm
+      .get('finalCurrency')!
+      .valueChanges.pipe(map((filter) => this.filterSymbols(filter || '')));
   }
 
   convertCurrency() {
-    console.log(this.convertForm.value);
+    const formValues: formData = this.convertToFormData();
+    this.exchangeService
+      .convertCurrency(
+        formValues.originCurrency,
+        formValues.finalCurrency,
+        formValues.amount
+      )
+      .subscribe((result) => (this.result = result));
     this.convertResult = true;
   }
 
   closeResult() {
     this.convertResult = false;
+  }
+
+  private filterSymbols(filter: string): string[] {
+    const filterValue = filter.toLocaleLowerCase();
+    const symbolList = this.symbolList;
+    return symbolList.filter((symbolRes) =>
+      symbolRes.toLocaleLowerCase().includes(filterValue)
+    );
+  }
+
+  private convertToFormData(): formData {
+    const formValues: formData = this.convertForm.value;
+
+    // gets the position of the currency symbol in the string
+    const stringSize = {
+      originSymbolBegin: formValues.originCurrency.length - 4,
+      originSymbolEnd: formValues.originCurrency.length - 1,
+      finalSymbolBegin: formValues.finalCurrency.length - 4,
+      finalSymbolEnd: formValues.finalCurrency.length - 1,
+    };
+
+    formValues.originCurrency = formValues.originCurrency.slice(
+      stringSize.originSymbolBegin,
+      stringSize.originSymbolEnd
+    );
+
+    formValues.finalCurrency = formValues.finalCurrency.slice(
+      stringSize.finalSymbolBegin,
+      stringSize.finalSymbolEnd
+    );
+
+    return formValues;
   }
 }
