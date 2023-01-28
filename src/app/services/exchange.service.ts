@@ -45,7 +45,11 @@ export class ExchangeService {
     return {
       rate: response.info.rate,
       amount: response.query.amount,
-      date: response.date,
+      date: new Date().toLocaleDateString('pt-BR'),
+      time: new Date().toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
       finalCurrency: response.query.to,
       originCurrency: response.query.from,
       result: response.result,

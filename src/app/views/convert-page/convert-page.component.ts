@@ -5,14 +5,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { map, Observable, startWith, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { REGEX_ONLY_NUMBERS } from 'src/app/models/constants';
-import {
-  ConvertResult,
-  formData,
-  SymbolResponse,
-} from 'src/app/models/interfaces';
+import { ConvertResult, FormData } from 'src/app/models/interfaces';
 import { ExchangeService } from 'src/app/services/exchange.service';
+import { StorageDataService } from 'src/app/services/storage-data.service';
 
 @Component({
   selector: 'app-convert-page',
@@ -31,7 +28,11 @@ export class ConvertPageComponent implements OnInit {
   convertResult = false;
   result: ConvertResult = {
     amount: 100,
-    date: new Date().toISOString(),
+    date: new Date().toLocaleDateString('pt-BR'),
+    time: new Date().toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    }),
     originCurrency: 'BRL',
     finalCurrency: 'USD',
     rate: 0.2000678,
@@ -40,6 +41,7 @@ export class ConvertPageComponent implements OnInit {
 
   constructor(
     private exchangeService: ExchangeService,
+    private storageService: StorageDataService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -75,7 +77,7 @@ export class ConvertPageComponent implements OnInit {
   }
 
   convertCurrency() {
-    const formValues: formData = this.convertToFormData();
+    const formValues: FormData = this.convertToFormData();
     this.searchResult = false;
     this.exchangeService
       .convertCurrency(
@@ -85,6 +87,7 @@ export class ConvertPageComponent implements OnInit {
       )
       .subscribe((result) => {
         this.result = result;
+        this.storageService.addObjectToStorage(result);
         this.searchResult = true;
       });
     this.convertResult = true;
@@ -102,8 +105,8 @@ export class ConvertPageComponent implements OnInit {
     );
   }
 
-  private convertToFormData(): formData {
-    const formValues: formData = this.convertForm.value;
+  private convertToFormData(): FormData {
+    const formValues: FormData = this.convertForm.value;
 
     // gets the position of the currency symbol in the string
     const stringSize = {

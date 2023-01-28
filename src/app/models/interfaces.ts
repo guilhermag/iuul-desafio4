@@ -4,15 +4,22 @@ export interface SymbolResponse {
 }
 
 export interface ConvertResult {
+  id?: number;
   rate: number;
   amount: number;
   originCurrency: string;
   finalCurrency: string;
   result: number;
   date: string;
+  time: string;
 }
 
-export interface formData {
+export interface HistoryDataItem {
+  id: number;
+  data: ConvertResult;
+}
+
+export interface FormData {
   amount: string;
   finalCurrency: string;
   originCurrency: string;
