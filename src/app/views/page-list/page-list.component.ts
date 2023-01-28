@@ -54,16 +54,4 @@ export class PageListComponent {
     console.log($event.target.value);
     this.dataTable.filter = $event.target.value;
   }
-
-  // Implementar no futuro, filtragem tabela simbolos
-  // filteredTable$ = this.filterSymbols.valueChanges.pipe(
-  //   debounceTime(300),
-  //   distinctUntilChanged(),
-  //   switchMap((filter) => this.filterTable(this.symbolsRes, filter)),
-  //   tap((res) => console.log(res))
-  // );
-
-  // filterTable(table: SymbolResponse[], filter: string) {
-  //   return table.filter((symbol) => symbol.description.includes(filter));
-  // }
 }

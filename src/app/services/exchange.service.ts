@@ -41,7 +41,7 @@ export class ExchangeService {
     );
   }
 
-  convertResponseToResult(response: any): ConvertResult {
+  private convertResponseToResult(response: any): ConvertResult {
     return {
       rate: response.info.rate,
       amount: response.query.amount,
