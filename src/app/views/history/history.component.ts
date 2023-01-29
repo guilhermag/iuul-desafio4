@@ -1,11 +1,13 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConvertResult, HistoryDataItem } from 'src/app/models/interfaces';
 
 import { StorageDataService } from 'src/app/services/storage-data.service';
+import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-history',
@@ -33,7 +35,8 @@ export class HistoryComponent implements AfterViewInit {
 
   constructor(
     private storageService: StorageDataService,
-    private liveAnnouncer: LiveAnnouncer
+    private liveAnnouncer: LiveAnnouncer,
+    public dialog: MatDialog
   ) {}
 
   ngAfterViewInit() {
@@ -49,6 +52,15 @@ export class HistoryComponent implements AfterViewInit {
     } else {
       this.liveAnnouncer.announce(`Ordenação reiniciada`);
     }
+  }
+
+  openDialog(item: HistoryDataItem) {
+    const dialogRef = this.dialog.open(DialogComponent);
+    dialogRef.afterClosed().subscribe((deleteItem) => {
+      if (deleteItem) {
+        this.deleteItem(item);
+      }
+    });
   }
 
   deleteItem(item: HistoryDataItem) {

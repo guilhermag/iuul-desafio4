@@ -35,10 +35,9 @@ export class ExchangeService {
       .set('to', finalCurrency)
       .set('amount', amount);
 
-    return this.http.get<string>(url, { params }).pipe(
-      tap((res) => console.log(res)),
-      map((res) => this.convertResponseToResult(res))
-    );
+    return this.http
+      .get<string>(url, { params })
+      .pipe(map((res) => this.convertResponseToResult(res)));
   }
 
   private convertResponseToResult(response: any): ConvertResult {

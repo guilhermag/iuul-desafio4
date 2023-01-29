@@ -15,6 +15,7 @@ import { PageListComponent } from './views/page-list/page-list.component';
 import { ConvertPageComponent } from './views/convert-page/convert-page.component';
 import { AppMaterialModule } from './shared/app-material.module';
 import { HistoryComponent } from './views/history/history.component';
+import { DialogComponent } from './shared/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { HistoryComponent } from './views/history/history.component';
     PageListComponent,
     ConvertPageComponent,
     HistoryComponent,
+    DialogComponent,
   ],
   imports: [
     AppRoutingModule,
