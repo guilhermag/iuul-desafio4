@@ -6,7 +6,10 @@
       </mat-toolbar>
     </p>
 
-    <div class="table-container" *ngIf="historyData.length > 1">
+    <div
+      class="table-container"
+      *ngIf="historyData.length > 0; else noTableData"
+    >
       <table
         mat-table
         [dataSource]="dataTable"
@@ -75,8 +78,8 @@
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Ações</th>
-          <td mat-cell *matCellDef="let element">
-            <mat-icon>delete</mat-icon>
+          <td mat-cell *matCellDef="let element" (click)="deleteItem(element)">
+            <mat-icon class="delete-item">delete</mat-icon>
           </td>
         </ng-container>
 
@@ -93,3 +96,9 @@
     </div>
   </div>
 </div>
+
+<ng-template #noTableData>
+  <h3 class="subtitle">
+    Ainda não há dados no histórico, faça algumas conversões para ver a tabela.
+  </h3>
+</ng-template>

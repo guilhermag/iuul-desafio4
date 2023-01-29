@@ -19,6 +19,15 @@ export class StorageDataService {
     return sessionStorageData ? JSON.parse(sessionStorageData) : [];
   }
 
+  deleteItem(item: HistoryDataItem) {
+    const data: HistoryDataItem[] = this.getSessionStorageData();
+    if (data.length > 0) {
+      const index = data.findIndex((element) => element.id === item.id);
+      data.splice(index, 1);
+      this.updateDataFromStorage(data);
+    }
+  }
+
   private convertToHistoryData(
     item: ConvertResult,
     data: HistoryDataItem[]
@@ -37,5 +46,9 @@ export class StorageDataService {
       result: item.result,
       actions: '',
     };
+  }
+
+  private updateDataFromStorage(data: HistoryDataItem[]) {
+    sessionStorage.setItem('historyData', JSON.stringify(data));
   }
 }

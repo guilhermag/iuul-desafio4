@@ -50,4 +50,10 @@ export class HistoryComponent implements AfterViewInit {
       this.liveAnnouncer.announce(`Ordenação reiniciada`);
     }
   }
+
+  deleteItem(item: HistoryDataItem) {
+    this.storageService.deleteItem(item);
+    this.historyData = this.storageService.getSessionStorageData();
+    this.dataTable.data = this.historyData;
+  }
 }
