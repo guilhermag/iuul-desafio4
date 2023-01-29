@@ -73,8 +73,7 @@
   </mat-card>
 
   <mat-card *ngIf="convertResult" class="result-card">
-    <mat-spinner *ngIf="!searchResult"></mat-spinner>
-    <div *ngIf="searchResult">
+    <div *ngIf="searchResult; else loadingResult">
       <mat-card-header>
         <mat-card-title>Resultado</mat-card-title>
       </mat-card-header>
@@ -96,3 +95,7 @@
     </div>
   </mat-card>
 </div>
+
+<ng-template #loadingResult>
+  <mat-spinner></mat-spinner>
+</ng-template>
