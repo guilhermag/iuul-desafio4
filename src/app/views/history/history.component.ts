@@ -1,52 +1,44 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { SymbolResponse } from 'src/app/models/interfaces';
-import { ExchangeService } from 'src/app/services/exchange.service';
+import { ConvertResult, HistoryDataItem } from 'src/app/models/interfaces';
+
+import { StorageDataService } from 'src/app/services/storage-data.service';
 
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.css'],
 })
-export class HistoryComponent {
+export class HistoryComponent implements AfterViewInit {
   tableColums: string[] = [
     'date',
-    'hour',
+    'time',
+    'rate',
     'amount',
-    'origin',
-    'final',
+    'finalCurrency',
+    'originCurrency',
     'result',
-    'tax',
     'actions',
   ];
-  symbolsRes!: SymbolResponse[];
-  filterSymbols = new FormControl();
 
-  dataTable: any;
+  historyData: HistoryDataItem[] = this.storageService.getSessionStorageData();
+
+  dataTable = new MatTableDataSource<HistoryDataItem>(this.historyData);
 
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};
   @ViewChild(MatSort) sort: MatSort = <MatSort>{};
 
   constructor(
-    private exchangeService: ExchangeService,
+    private storageService: StorageDataService,
     private liveAnnouncer: LiveAnnouncer
   ) {}
 
-  ngOnInit(): void {
-    this.getSymbols();
-  }
-
-  getSymbols() {
-    this.exchangeService.getSymbols().subscribe((res) => {
-      this.symbolsRes = res;
-      this.dataTable = new MatTableDataSource<SymbolResponse>(this.symbolsRes);
-      this.dataTable.paginator = this.paginator;
-      this.dataTable.sort = this.sort;
-    });
+  ngAfterViewInit() {
+    this.dataTable.paginator = this.paginator;
+    this.dataTable.sort = this.sort;
   }
 
   announceSortChante(sortState: Sort) {
@@ -57,10 +49,5 @@ export class HistoryComponent {
     } else {
       this.liveAnnouncer.announce(`Ordenação reiniciada`);
     }
-  }
-
-  filterData($event: any) {
-    console.log($event.target.value);
-    this.dataTable.filter = $event.target.value;
   }
 }

@@ -4,7 +4,6 @@ export interface SymbolResponse {
 }
 
 export interface ConvertResult {
-  id?: number;
   rate: number;
   amount: number;
   originCurrency: string;
@@ -16,7 +15,14 @@ export interface ConvertResult {
 
 export interface HistoryDataItem {
   id: number;
-  data: ConvertResult;
+  rate: number;
+  amount: number;
+  originCurrency: string;
+  finalCurrency: string;
+  result: number;
+  date: string;
+  time: string;
+  actions: string;
 }
 
 export interface FormData {

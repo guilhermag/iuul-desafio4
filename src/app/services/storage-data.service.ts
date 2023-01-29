@@ -25,6 +25,17 @@ export class StorageDataService {
   ): HistoryDataItem {
     const lastPosition = data.length - 1;
     const id = data.length === 0 ? 1 : data[lastPosition].id + 1;
-    return { id: id, data: item };
+
+    return {
+      id: id,
+      amount: item.amount,
+      date: item.date,
+      time: item.time,
+      originCurrency: item.originCurrency,
+      finalCurrency: item.finalCurrency,
+      rate: item.rate,
+      result: item.result,
+      actions: '',
+    };
   }
 }
