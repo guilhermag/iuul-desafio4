@@ -42,7 +42,9 @@
 
         <ng-container matColumnDef="amount">
           <th mat-header-cell *matHeaderCellDef>Valor Informado</th>
-          <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+          <td mat-cell *matCellDef="let element">
+            {{ element.amount | currency : element.originCurrency }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="originCurrency">
@@ -68,7 +70,14 @@
           >
             Resultado
           </th>
-          <td mat-cell *matCellDef="let element">{{ element.result }}</td>
+          <td mat-cell *matCellDef="let element">
+            <div class="high-value">
+              <mat-icon color="warn" *ngIf="element.higherVale"
+                >priority_high</mat-icon
+              >
+              {{ element.result | currency : element.finalCurrency }}
+            </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="rate">

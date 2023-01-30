@@ -11,6 +11,7 @@ export interface ConvertResult {
   result: number;
   date: string;
   time: string;
+  higherVale: boolean;
 }
 
 export interface HistoryDataItem {
@@ -23,6 +24,7 @@ export interface HistoryDataItem {
   date: string;
   time: string;
   actions: string;
+  higherVale: boolean;
 }
 
 export interface FormData {

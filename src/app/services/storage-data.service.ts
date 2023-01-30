@@ -19,8 +19,6 @@ export class StorageDataService {
     return sessionStorageData ? JSON.parse(sessionStorageData) : [];
   }
 
-  // openDeleteDialog(): {};
-
   deleteItem(item: HistoryDataItem) {
     const data: HistoryDataItem[] = this.getSessionStorageData();
     if (data.length > 0) {
@@ -47,6 +45,7 @@ export class StorageDataService {
       rate: item.rate,
       result: item.result,
       actions: '',
+      higherVale: item.higherVale,
     };
   }
 

@@ -59,7 +59,6 @@ export class PageListComponent implements OnDestroy {
   }
 
   filterData($event: any) {
-    console.log($event.target.value);
     this.dataTable.filter = $event.target.value;
   }
 }

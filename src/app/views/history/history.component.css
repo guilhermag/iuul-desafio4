@@ -33,3 +33,10 @@ table {
 .subtitle {
   text-align: center;
 }
+
+.high-value {
+  display: flex;
+}
+td {
+  text-align: center;
+}

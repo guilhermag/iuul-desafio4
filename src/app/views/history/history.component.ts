@@ -44,6 +44,7 @@ export class HistoryComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    console.log(this.historyData);
     this.dataTable.paginator = this.paginator;
     this.dataTable.sort = this.sort;
   }

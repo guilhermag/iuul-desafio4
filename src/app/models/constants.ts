@@ -14,4 +14,5 @@ export const CONVERT_RESULT: ConvertResult = {
   finalCurrency: 'USD',
   rate: 0.2000678,
   result: 19.867,
+  higherVale: false,
 };

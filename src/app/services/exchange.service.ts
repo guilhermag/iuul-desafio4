@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import {
   ApiResponse,
   ApiResponseSymbols,
@@ -13,7 +13,11 @@ import {
 })
 export class ExchangeService {
   private readonly API_URL = 'https://api.exchangerate.host';
-  constructor(private http: HttpClient) {}
+  subscription$: Subscription;
+
+  constructor(private http: HttpClient) {
+    this.subscription$ = Subscription.EMPTY;
+  }
 
   getSymbols(): Observable<SymbolResponse[]> {
     const url = `${this.API_URL}/symbols`;
@@ -36,19 +40,38 @@ export class ExchangeService {
       .set('amount', amount);
 
     return this.http
-      .get<string>(url, { params })
+      .get<ApiResponse>(url, { params })
       .pipe(map((res) => this.convertResponseToResult(res)));
   }
 
-  // checkForHigherValuesUSD(
-  //   currency: string,
-  //   amount: number,
-  //   valueCheck: number = 10000
-  // ): Observable<> {
+  updateForHigherValuesUSD(
+    item: ConvertResult,
+    valueCheck: number = 10000
+  ): Observable<ConvertResult> {
+    if (item.originCurrency === 'USD') {
+      item.amount >= valueCheck
+        ? (item.higherVale = true)
+        : (item.higherVale = false);
+      console.log(item);
+      return new Observable((sub) => sub.next(item));
+    } else {
+      return this.convertCurrency(
+        item.originCurrency,
+        'USD',
+        item.amount.toString()
+      ).pipe(
+        map((res) => {
+          console.log(item);
+          res.amount >= valueCheck
+            ? (item.higherVale = true)
+            : (item.higherVale = false);
+          return item;
+        })
+      );
+    }
+  }
 
-  // };
-
-  private convertResponseToResult(response: any): ConvertResult {
+  private convertResponseToResult(response: ApiResponse): ConvertResult {
     return {
       rate: response.info.rate,
       amount: response.query.amount,
@@ -60,6 +83,7 @@ export class ExchangeService {
       finalCurrency: response.query.to,
       originCurrency: response.query.from,
       result: response.result,
+      higherVale: false,
     };
   }
 }
