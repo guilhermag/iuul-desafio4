@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { map, Observable } from 'rxjs';
-import { REGEX_ONLY_NUMBERS } from 'src/app/models/constants';
+import { map, Observable, Subscription } from 'rxjs';
+import { CONVERT_RESULT, REGEX_ONLY_NUMBERS } from 'src/app/models/constants';
 import { ConvertResult, FormData } from 'src/app/models/interfaces';
 import { ExchangeService } from 'src/app/services/exchange.service';
 import { StorageDataService } from 'src/app/services/storage-data.service';
@@ -16,34 +16,29 @@ import { StorageDataService } from 'src/app/services/storage-data.service';
   templateUrl: './convert-page.component.html',
   styleUrls: ['./convert-page.component.css'],
 })
-export class ConvertPageComponent implements OnInit {
+export class ConvertPageComponent implements OnInit, OnDestroy {
   convertForm!: FormGroup;
   symbolList!: string[];
   searchResult = false;
+  subSymbols$: Subscription;
+  subConvert$: Subscription;
+  subscriptions: Subscription[] = [];
 
   currencyControl = new FormControl('');
-  filteredOriginCurrency!: Observable<any>;
-  filteredFinalCurrency!: Observable<any>;
+  filteredOriginCurrency!: Observable<string[]>;
+  filteredFinalCurrency!: Observable<string[]>;
 
   convertResult = false;
-  result: ConvertResult = {
-    amount: 100,
-    date: new Date().toLocaleDateString('pt-BR'),
-    time: new Date().toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-    originCurrency: 'BRL',
-    finalCurrency: 'USD',
-    rate: 0.2000678,
-    result: 19.867,
-  };
+  result: ConvertResult = CONVERT_RESULT;
 
   constructor(
     private exchangeService: ExchangeService,
     private storageService: StorageDataService,
     private formBuilder: FormBuilder
-  ) {}
+  ) {
+    this.subSymbols$ = Subscription.EMPTY;
+    this.subConvert$ = Subscription.EMPTY;
+  }
 
   ngOnInit() {
     this.convertForm = this.formBuilder.group({
@@ -57,7 +52,7 @@ export class ConvertPageComponent implements OnInit {
         ]),
       ],
     });
-    this.exchangeService
+    this.subSymbols$ = this.exchangeService
       .getSymbols()
       .pipe(
         map((res) =>
@@ -76,10 +71,14 @@ export class ConvertPageComponent implements OnInit {
       .valueChanges.pipe(map((filter) => this.filterSymbols(filter || '')));
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
   convertCurrency() {
     const formValues: FormData = this.convertToFormData();
     this.searchResult = false;
-    this.exchangeService
+    this.subConvert$ = this.exchangeService
       .convertCurrency(
         formValues.originCurrency,
         formValues.finalCurrency,

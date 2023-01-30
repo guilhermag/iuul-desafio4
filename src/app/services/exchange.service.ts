@@ -40,6 +40,14 @@ export class ExchangeService {
       .pipe(map((res) => this.convertResponseToResult(res)));
   }
 
+  // checkForHigherValuesUSD(
+  //   currency: string,
+  //   amount: number,
+  //   valueCheck: number = 10000
+  // ): Observable<> {
+
+  // };
+
   private convertResponseToResult(response: any): ConvertResult {
     return {
       rate: response.info.rate,

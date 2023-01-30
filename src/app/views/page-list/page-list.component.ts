@@ -1,9 +1,10 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subscription } from 'rxjs';
 import { SymbolResponse } from 'src/app/models/interfaces';
 import { ExchangeService } from 'src/app/services/exchange.service';
 
@@ -12,10 +13,11 @@ import { ExchangeService } from 'src/app/services/exchange.service';
   templateUrl: './page-list.component.html',
   styleUrls: ['./page-list.component.css'],
 })
-export class PageListComponent {
+export class PageListComponent implements OnDestroy {
   tableColums: string[] = ['code', 'description'];
   symbolsRes!: SymbolResponse[];
   filterSymbols = new FormControl();
+  subscription$: Subscription;
 
   dataTable: any;
 
@@ -25,14 +27,20 @@ export class PageListComponent {
   constructor(
     private exchangeService: ExchangeService,
     private liveAnnouncer: LiveAnnouncer
-  ) {}
+  ) {
+    this.subscription$ = Subscription.EMPTY;
+  }
 
   ngOnInit(): void {
     this.getSymbols();
   }
 
+  ngOnDestroy(): void {
+    this.subscription$.unsubscribe();
+  }
+
   getSymbols() {
-    this.exchangeService.getSymbols().subscribe((res) => {
+    this.subscription$ = this.exchangeService.getSymbols().subscribe((res) => {
       this.symbolsRes = res;
       this.dataTable = new MatTableDataSource<SymbolResponse>(this.symbolsRes);
       this.dataTable.paginator = this.paginator;
