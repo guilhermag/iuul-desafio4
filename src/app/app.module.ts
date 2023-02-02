@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { HomeComponent } from './views/home/home.component';
-import { CoinListComponent } from './components/coin-list/coin-list.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PageListComponent } from './views/page-list/page-list.component';
@@ -20,7 +19,6 @@ import { DialogComponent } from './shared/dialog/dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
-    CoinListComponent,
     NavbarComponent,
     HomeComponent,
     FooterComponent,
