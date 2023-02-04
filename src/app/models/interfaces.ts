@@ -11,7 +11,7 @@ export interface ConvertResult {
   result: number;
   date: string;
   time: string;
-  higherVale: boolean;
+  higherValue: boolean;
 }
 
 export interface HistoryDataItem {

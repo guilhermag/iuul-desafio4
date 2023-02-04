@@ -45,7 +45,7 @@ export class StorageDataService {
       rate: item.rate,
       result: item.result,
       actions: '',
-      higherVale: item.higherVale,
+      higherVale: item.higherValue,
     };
   }
 

@@ -85,11 +85,9 @@ export class ConvertPageComponent implements OnInit, OnDestroy {
         formValues.amount
       )
       .subscribe((result) => {
-        console.log('first', result);
         this.exchangeService
           .updateForHigherValuesUSD(result)
           .subscribe((resultUpdated) => {
-            console.log('updated', resultUpdated);
             this.result = resultUpdated;
             this.storageService.addObjectToStorage(resultUpdated);
             this.searchResult = true;

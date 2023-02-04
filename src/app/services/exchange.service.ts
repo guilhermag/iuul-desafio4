@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, Subscription } from 'rxjs';
+import { map, Observable, Subscription, tap } from 'rxjs';
 import {
   ApiResponse,
   ApiResponseSymbols,
@@ -50,9 +50,8 @@ export class ExchangeService {
   ): Observable<ConvertResult> {
     if (item.originCurrency === 'USD') {
       item.amount >= valueCheck
-        ? (item.higherVale = true)
-        : (item.higherVale = false);
-      console.log(item);
+        ? (item.higherValue = true)
+        : (item.higherValue = false);
       return new Observable((sub) => sub.next(item));
     } else {
       return this.convertCurrency(
@@ -61,10 +60,9 @@ export class ExchangeService {
         item.amount.toString()
       ).pipe(
         map((res) => {
-          console.log(item);
           res.amount >= valueCheck
-            ? (item.higherVale = true)
-            : (item.higherVale = false);
+            ? (item.higherValue = true)
+            : (item.higherValue = false);
           return item;
         })
       );
@@ -83,7 +81,7 @@ export class ExchangeService {
       finalCurrency: response.query.to,
       originCurrency: response.query.from,
       result: response.result,
-      higherVale: false,
+      higherValue: false,
     };
   }
 }
