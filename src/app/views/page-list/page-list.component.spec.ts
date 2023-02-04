@@ -1,4 +1,7 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppMaterialModule } from 'src/app/shared/app-material.module';
 
 import { PageListComponent } from './page-list.component';
 
@@ -8,9 +11,9 @@ describe('PageListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PageListComponent ]
-    })
-    .compileComponents();
+      declarations: [PageListComponent],
+      imports: [AppMaterialModule, HttpClientModule, BrowserAnimationsModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PageListComponent);
     component = fixture.componentInstance;

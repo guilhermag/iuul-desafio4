@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AppMaterialModule } from 'src/app/shared/app-material.module';
 
 import { HistoryComponent } from './history.component';
 
@@ -8,9 +9,9 @@ describe('HistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HistoryComponent ]
-    })
-    .compileComponents();
+      declarations: [HistoryComponent],
+      imports: [AppMaterialModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HistoryComponent);
     component = fixture.componentInstance;
