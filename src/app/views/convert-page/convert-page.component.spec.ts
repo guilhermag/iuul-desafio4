@@ -23,6 +23,7 @@ describe('ConvertPageComponent', () => {
       ],
       providers: [ExchangeService, StorageDataService],
       declarations: [ConvertPageComponent],
+      teardown: { destroyAfterEach: false },
     }).compileComponents();
 
     fixture = TestBed.createComponent(ConvertPageComponent);
@@ -32,5 +33,19 @@ describe('ConvertPageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    component.subSymbols$.unsubscribe();
+  });
+
+  it('should convertCurrency', () => {
+    component.convertCurrency();
+  });
+
+  it('should close result', () => {
+    component.closeResult();
+    expect(component.convertResult).toBeFalse();
+  });
+
+  it('should get symbols for subSymbols$', () => {
+    component.subSymbols$;
   });
 });
