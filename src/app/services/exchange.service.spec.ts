@@ -16,9 +16,8 @@ import { ConvertResult, SymbolResponse } from '../models/interfaces';
 
 import { ExchangeService } from './exchange.service';
 
-fdescribe('ExchangeService', () => {
+describe('ExchangeService', () => {
   let service: ExchangeService;
-  let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
   const API_URL = 'https://api.exchangerate.host';
 
@@ -27,7 +26,6 @@ fdescribe('ExchangeService', () => {
       providers: [ExchangeService],
       imports: [HttpClientTestingModule],
     });
-    httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     service = TestBed.inject(ExchangeService);
   });
