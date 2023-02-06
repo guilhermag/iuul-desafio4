@@ -52,7 +52,7 @@ export class HistoryComponent implements AfterViewInit, OnDestroy {
     this.subscription$.unsubscribe();
   }
 
-  announceSortChante(sortState: Sort) {
+  announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this.liveAnnouncer.announce(
         `Ordenados ${sortState.direction} finalizado`

@@ -48,7 +48,7 @@ export class PageListComponent implements OnDestroy {
     });
   }
 
-  announceSortChante(sortState: Sort) {
+  announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this.liveAnnouncer.announce(
         `Ordenados ${sortState.direction} finalizado`

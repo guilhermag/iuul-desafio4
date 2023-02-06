@@ -1,10 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { TestScheduler } from 'rxjs/testing';
 import {
   mockedSymbolApiResponse,
   mockedConverResult,
@@ -12,7 +10,7 @@ import {
   mockedConvertApiResponse,
   mockedConvertHigherApiResponse,
 } from 'src/testing/mocks/exchange-api';
-import { ConvertResult, SymbolResponse } from '../models/interfaces';
+import { SymbolResponse } from '../models/interfaces';
 
 import { ExchangeService } from './exchange.service';
 
