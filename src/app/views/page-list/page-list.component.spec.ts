@@ -20,7 +20,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 
-fdescribe('PageListComponent', () => {
+describe('PageListComponent', () => {
   let component: PageListComponent;
   let httpTestingController: HttpTestingController;
   let fixture: ComponentFixture<PageListComponent>;
